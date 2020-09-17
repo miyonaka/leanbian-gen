@@ -1,16 +1,16 @@
-# pi-gen
+# leanbian-gen
 
-_Tool used to create the raspberrypi.org Raspbian images_
+_Tool used to create the Leanbian images_
 
 
 ## Dependencies
 
-pi-gen runs on Debian based operating systems. Currently it is only supported on
+leanbian-gen runs on Debian based operating systems. Currently it is only supported on
 either Debian Buster or Ubuntu Xenial and is known to have issues building on
 earlier releases of these systems. On other Linux distributions it may be possible
 to use the Docker build described below.
 
-To install the required dependencies for pi-gen you should run:
+To install the required dependencies for leanbian-gen you should run:
 
 ```bash
 apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
@@ -32,7 +32,7 @@ The following environment variables are supported:
  * `IMG_NAME` **required** (Default: unset)
 
    The name of the image to build with the current stage directories.  Setting
-   `IMG_NAME=Raspbian` is logical for an unmodified RPi-Distro/pi-gen build,
+   `IMG_NAME=Leanbian` is logical for an unmodified miyonaka/leanbian-gen build,
    but you should use something else for a customized version.  Export files
    in stages may add suffixes to `IMG_NAME`.
 
@@ -57,16 +57,16 @@ The following environment variables are supported:
 
    **CAUTION**: Currently, changing this value will probably break build.sh
 
-   Top-level directory for `pi-gen`.  Contains stage directories, build
+   Top-level directory for `leanbian-gen`.  Contains stage directories, build
    scripts, and by default both work and deployment directories.
 
  * `WORK_DIR`  (Default: `"$BASE_DIR/work"`)
 
-   Directory in which `pi-gen` builds the target system.  This value can be
+   Directory in which `leanbian-gen` builds the target system.  This value can be
    changed if you have a suitably large, fast storage location for stages to
    be built and cached.  Note, `WORK_DIR` stores a complete copy of the target
    system for each build stage, amounting to tens of gigabytes in the case of
-   Raspbian.
+   Leanbian.
 
    **CAUTION**: If your working directory is on an NTFS partition you probably won't be able to build. Make sure this is a proper Linux filesystem.
 
@@ -144,12 +144,12 @@ The following environment variables are supported:
 
  * `STAGE_LIST` (Default: `stage*`)
 
-    If set, then instead of working through the numeric stages in order, this list will be followed. For example setting to `"stage0 stage1 mystage stage2"` will run the contents of `mystage` before stage2. Note that quotes are needed around the list. An absolute or relative path can be given for stages outside the pi-gen directory.
+    If set, then instead of working through the numeric stages in order, this list will be followed. For example setting to `"stage0 stage1 mystage stage2"` will run the contents of `mystage` before stage2. Note that quotes are needed around the list. An absolute or relative path can be given for stages outside the leanbian-gen directory.
 
 A simple example for building Raspbian:
 
 ```bash
-IMG_NAME='Raspbian'
+IMG_NAME='Leanbian'
 ```
 
 The config file can also be specified on the command line as an argument the `build.sh` or `build-docker.sh` scripts.
@@ -251,9 +251,9 @@ solution).
 
 ## Stage Anatomy
 
-### Raspbian Stage Overview
+### Leanbian Stage Overview
 
-The build of Raspbian is divided up into several stages for logical clarity
+The build of Leanbian is divided up into several stages for logical clarity
 and modularity.  This causes some initial complexity, but it simplifies
 maintenance and allows for more easy customization.
 
@@ -274,7 +274,7 @@ maintenance and allows for more easy customization.
    really usable yet in a traditional sense yet.  Still, if you want minimal,
    this is minimal and the rest you could reasonably do yourself as sysadmin.
 
- - **Stage 2** - lite system.  This stage produces the Raspbian-Lite image.  It
+ - **Stage 2** - lite system.  This stage produces the Leanbian-Lite image.  It
    installs some optimized memory functions, sets timezone and charmap
    defaults, installs fake-hwclock and ntp, wifi and bluetooth support,
    dphys-swapfile, and other basics for managing the hardware.  It also
@@ -285,20 +285,20 @@ maintenance and allows for more easy customization.
    development purposes on a minimal system such as basic Python and Lua
    packages as well as the `build-essential` package.  They are lumped right
    in with more essential packages presently, though they need not be with
-   pi-gen.  These are understandable for Raspbian's target audience, but if
+   leanbian-gen.  These are understandable for Raspbian's target audience, but if
    you were looking for something between truly minimal and Raspbian-Lite,
    here's where you start trimming.
 
  - **Stage 3** - desktop system.  Here's where you get the full desktop system
-   with X11 and LXDE, web browsers, git for development, Raspbian custom UI
+   with X11 and LXDE, web browsers, git for development, Leanbian custom UI
    enhancements, etc.  This is a base desktop system, with some development
    tools installed.
 
- - **Stage 4** - Normal Raspbian image. System meant to fit on a 4GB card. This is the
-   stage that installs most things that make Raspbian friendly to new
+ - **Stage 4** - Normal Leanbian image. System meant to fit on a 4GB card. This is the
+   stage that installs most things that make Leanbian friendly to new
    users like system documentation.
 
- - **Stage 5** - The Raspbian Full image. More development
+ - **Stage 5** - The Leanbian Full image. More development
    tools, an email client, learning tools like Scratch, specialized packages
    like sonic-pi, office productivity, etc.  
 
@@ -313,7 +313,7 @@ to `./stage2` (if building a minimal system).
 
 ```bash
 # Example for building a lite system
-echo "IMG_NAME='Raspbian'" > config
+echo "IMG_NAME='Leanbian'" > config
 touch ./stage3/SKIP ./stage4/SKIP ./stage5/SKIP
 touch ./stage4/SKIP_IMAGES ./stage5/SKIP_IMAGES
 sudo ./build.sh  # or ./build-docker.sh
@@ -348,7 +348,7 @@ Please note there is currently an issue when compiling with a 64 Bit OS. See htt
 ## `binfmt_misc`
 
 Linux is able execute binaries from other architectures, meaning that it should be
-possible to make use of `pi-gen` on an x86_64 system, even though it will be running
+possible to make use of `leanbian-gen` on an x86_64 system, even though it will be running
 ARM binaries. This requires support from the [`binfmt_misc`](https://en.wikipedia.org/wiki/Binfmt_misc)
 kernel module.
 

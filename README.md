@@ -7,8 +7,7 @@ _Tool used to create the Leanbian images_
 
 leanbian-gen runs on Debian based operating systems. Currently it is only supported on
 either Debian Buster or Ubuntu Xenial and is known to have issues building on
-earlier releases of these systems. On other Linux distributions it may be possible
-to use the Docker build described below.
+earlier releases of these systems.
 
 To install the required dependencies for leanbian-gen you should run:
 
@@ -46,12 +45,6 @@ The following environment variables are supported:
    If you require the use of an apt proxy, set it here.  This proxy setting
    will not be included in the image, making it safe to use an `apt-cacher` or
    similar package for development.
-
-   If you have Docker installed, you can set up a local apt caching proxy to
-   like speed up subsequent builds like this:
-
-       docker-compose up -d
-       echo 'APT_PROXY=http://172.17.0.1:3142' >> config
 
  * `BASE_DIR`  (Default: location of `build.sh`)
 
@@ -152,7 +145,7 @@ A simple example for building Raspbian:
 IMG_NAME='Leanbian'
 ```
 
-The config file can also be specified on the command line as an argument the `build.sh` or `build-docker.sh` scripts.
+The config file can also be specified on the command line as an argument the `build.sh` scripts.
 
 ```
 ./build.sh -c myconfig
@@ -203,50 +196,6 @@ The following process is followed to build images:
   * Generate the images for any stages that have specified them
 
 It is recommended to examine build.sh for finer details.
-
-
-## Docker Build
-
-Docker can be used to perform the build inside a container. This partially isolates
-the build from the host system, and allows using the script on non-debian based
-systems (e.g. Fedora Linux). The isolate is not complete due to the need to use
-some kernel level services for arm emulation (binfmt) and loop devices (losetup).
-
-To build:
-
-```bash
-vi config         # Edit your config file. See above.
-./build-docker.sh
-```
-
-If everything goes well, your finished image will be in the `deploy/` folder.
-You can then remove the build container with `docker rm -v pigen_work`
-
-If something breaks along the line, you can edit the corresponding scripts, and
-continue:
-
-```bash
-CONTINUE=1 ./build-docker.sh
-```
-
-To examine the container after a failure you can enter a shell within it using:
-
-```bash
-sudo docker run -it --privileged --volumes-from=pigen_work pi-gen /bin/bash
-```
-
-After successful build, the build container is by default removed. This may be undesired when making incremental changes to a customized build. To prevent the build script from remove the container add
-
-```bash
-PRESERVE_CONTAINER=1 ./build-docker.sh
-```
-
-There is a possibility that even when running from a docker container, the
-installation of `qemu-user-static` will silently fail when building the image
-because `binfmt-support` _must be enabled on the underlying kernel_. An easy
-fix is to ensure `binfmt-support` is installed on the host machine before
-starting the `./build-docker.sh` script (or using your own docker build
-solution).
 
 
 ## Stage Anatomy
@@ -316,7 +265,7 @@ to `./stage2` (if building a minimal system).
 echo "IMG_NAME='Leanbian'" > config
 touch ./stage3/SKIP ./stage4/SKIP ./stage5/SKIP
 touch ./stage4/SKIP_IMAGES ./stage5/SKIP_IMAGES
-sudo ./build.sh  # or ./build-docker.sh
+sudo ./build.sh
 ```
 
 If you wish to build further configurations upon (for example) the lite

@@ -238,19 +238,6 @@ maintenance and allows for more easy customization.
    you were looking for something between truly minimal and Raspbian-Lite,
    here's where you start trimming.
 
- - **Stage 3** - desktop system.  Here's where you get the full desktop system
-   with X11 and LXDE, web browsers, git for development, Leanbian custom UI
-   enhancements, etc.  This is a base desktop system, with some development
-   tools installed.
-
- - **Stage 4** - Normal Leanbian image. System meant to fit on a 4GB card. This is the
-   stage that installs most things that make Leanbian friendly to new
-   users like system documentation.
-
- - **Stage 5** - The Leanbian Full image. More development
-   tools, an email client, learning tools like Scratch, specialized packages
-   like sonic-pi, office productivity, etc.  
-
 ### Stage specification
 
 If you wish to build up to a specified stage (such as building up to stage 2

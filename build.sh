@@ -143,8 +143,8 @@ do
 	esac
 done
 
-export PI_GEN=${PI_GEN:-pi-gen}
-export PI_GEN_REPO=${PI_GEN_REPO:-https://github.com/RPi-Distro/pi-gen}
+export LEANBIAN_GEN=${LEANBIAN_GEN:-leanbian-gen}
+export LEANBIAN_GEN_REPO=${LEANBIAN_GEN_REPO:-https://github.com/miyonaka/leanbian-gen}
 
 if [ -z "${IMG_NAME}" ]; then
 	echo "IMG_NAME not set" 1>&2
@@ -153,19 +153,19 @@ fi
 
 export USE_QEMU="${USE_QEMU:-0}"
 export IMG_DATE="${IMG_DATE:-"$(date +%Y-%m-%d)"}"
-export IMG_FILENAME="${IMG_FILENAME:-"${IMG_DATE}-${IMG_NAME}"}"
-export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_DATE}-${IMG_NAME}"}"
+export IMG_FILENAME="${IMG_FILENAME:-"${IMG_NAME}_${IMG_DATE}"}"
+export ZIP_FILENAME="${ZIP_FILENAME:-"image_${IMG_NAME}_${IMG_DATE}"}"
 
 export SCRIPT_DIR="${BASE_DIR}/scripts"
-export WORK_DIR="${WORK_DIR:-"${BASE_DIR}/work/${IMG_DATE}-${IMG_NAME}"}"
+export WORK_DIR="${WORK_DIR:-"${BASE_DIR}/work/${IMG_NAME}_${IMG_DATE}"}"
 export DEPLOY_DIR=${DEPLOY_DIR:-"${BASE_DIR}/deploy"}
 export DEPLOY_ZIP="${DEPLOY_ZIP:-1}"
 export LOG_FILE="${WORK_DIR}/build.log"
 
-export TARGET_HOSTNAME=${TARGET_HOSTNAME:-raspberrypi}
+export TARGET_HOSTNAME=${TARGET_HOSTNAME:-leanbian}
 
-export FIRST_USER_NAME=${FIRST_USER_NAME:-pi}
-export FIRST_USER_PASS=${FIRST_USER_PASS:-raspberry}
+export FIRST_USER_NAME=${FIRST_USER_NAME:-admin}
+export FIRST_USER_PASS=${FIRST_USER_PASS:-password}
 export RELEASE=${RELEASE:-buster}
 export WPA_ESSID
 export WPA_PASSWORD
@@ -175,10 +175,10 @@ export PUBKEY_ONLY_SSH="${PUBKEY_ONLY_SSH:-0}"
 
 export LOCALE_DEFAULT="${LOCALE_DEFAULT:-ja_JP.UTF-8}"
 
-export KEYBOARD_KEYMAP="${KEYBOARD_KEYMAP:-Japanese}"
-export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-English (UK)}"
+export KEYBOARD_KEYMAP="${KEYBOARD_KEYMAP:-jp}"
+export KEYBOARD_LAYOUT="${KEYBOARD_LAYOUT:-Japanese}"
 
-export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Europe/London}"
+export TIMEZONE_DEFAULT="${TIMEZONE_DEFAULT:-Asia/Tokyo}"
 
 export GIT_HASH=${GIT_HASH:-"$(git rev-parse HEAD)"}
 
